@@ -7,6 +7,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
+    Switch,
 } from 'react-native';
 import TimeManagement from '../assets/images/Time-management.png'
 const ToSchedule = () => {
@@ -16,6 +17,7 @@ const ToSchedule = () => {
     const [hours, setHours] = useState();
     const [minuts, setMinuts] = useState();
     const [seconds, setSeconds] = useState();
+    const [action, setAction] = useState();
 
     return (
         <View style={ToScheduleStyle.centerItens}>
@@ -58,6 +60,19 @@ const ToSchedule = () => {
                     <Text style={ToScheduleStyle.labelClock}>segundos</Text>
                 </View>
             </View>
+            {/* <View>
+                <Text>Função</Text>
+                <View style={ToScheduleStyle.rowItens}>
+                    <Text>Off</Text>
+                    <Switch
+                        trackColor={{ false: "red", true: "#5ef75b" }}
+                        thumbColor={action ? "#5ef75b" : "red"}
+                        onValueChange={setAction}
+                        value={action}
+                    />
+                    <Text>On</Text>
+                </View>
+            </View> */}
             <TouchableOpacity style={ToScheduleStyle.ScheduleButton}>
                 <Text style={ToScheduleStyle.textScheduleButton}>Agendar</Text>
             </TouchableOpacity>
@@ -72,7 +87,6 @@ const ToScheduleStyle = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        // backgroundColor: 'red',
         height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.3)),
     },
     image: {

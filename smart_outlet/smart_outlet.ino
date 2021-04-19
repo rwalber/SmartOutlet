@@ -16,7 +16,6 @@ bool STATE_BUTTON_2 = 0;
 
 void setup() {
   COMM.begin(9600);
-//  Serial.begin(9600);
 //  Relay
   pinMode(OUTLET_1, OUTPUT);
   pinMode(OUTLET_2, OUTPUT);

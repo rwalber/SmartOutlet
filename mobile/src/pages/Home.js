@@ -4,93 +4,38 @@ import
 from 'react';
 
 import {
+    Text,
     View,
     Image,
     StyleSheet,
-    Text,
-    TouchableOpacity,
     Dimensions,
-    Alert,
+    TouchableOpacity,
     ActivityIndicator,
 } from 'react-native';
 
-import BluetoothSerial from 'react-native-bluetooth-serial';
-
 import logo from '../assets/images/Smart-home-bro.png'
 
-import { Connect, Subscribe } from '../components/BluetoothSerial';
+import { Connect, VerifyStateBluetooth } from '../components/BluetoothSerial';
 
 const Home = (props) => {
-
+    
     const [loadingConnect, setLoadingConnect] = useState(false);
-
-    // useEffect(() => {
-    //     verifyBluetoothState();
-    // }, [])
-
-    // const alertEnableBluetooth = () => {
-    //     Alert.alert(
-    //         "Ativar bluetooth",
-    //         "Ative o dispositivo Bluetooth para continuar!",
-    //         [
-    //             {
-    //                 text: "Cancelar",
-    //                 onPress: () => Alert.alert("Atenção, a conexão com a SmartOutlet é realizada através do dispositivo Bluetooth."),
-    //                 style: "cancel",
-    //             },
-    //             {
-    //                 text: "Ativar",
-    //                 onPress: () => enableBluetooth(),
-    //                 style: "default",
-    //             },
-    //         ]
-    //     );
-    // }
-
-    // const verifyBluetoothState = () => {
-    //     BluetoothSerial.isEnabled().then((state) => {
-    //         if (!state) {
-    //             alertEnableBluetooth();
-    //         }
-    //         else if(state) {
-    //             // connectDevice();
-    //         }
-    //     })
-    // }
-
-    // const enableBluetooth = () => {
-    //     BluetoothSerial.enable().then(() => {
-    //         console.log("Bluetooth powered on");
-    //     }).catch((err) => {
-    //         Alert.alert("Erro ao ativar bluetooth: "+err.message);
-    //     });
-    // }
-
-    const connectDevice = () => {
-        Promise.all([Connect()]).then(result => {
+    
+    useEffect(() => {
+        VerifyStateBluetooth();
+    }, []);
+    
+    const connectDevice = async () => {
+        setLoadingConnect(true);
+        Connect().then((result) => {
             if(result) {
-                // Subscribe();
                 props.navigation.navigate('OutletList');
             } else {
-                console.log("nao conectado");
+                setLoadingConnect(false);
             }
-        })
-        // let result = ;
-        // console.log(result);
-        // if(Connect()) {
-            
-        // }
-        // setLoadingConnect(true);
-        // BluetoothSerial.connect("20:16:10:19:62:58")
-        // .then(() => {
-        //     console.log("connected");
-        //     props.navigation.navigate('OutletList');
-        // }).catch((err) => {
-        //     setLoadingConnect(false);
-        //     Alert.alert("Erro ao conectar: "+err.message);
-        // });
+        });
     }
-
+    
     return (
         <View style={Style.container}>
             <View>
@@ -104,6 +49,7 @@ const Home = (props) => {
                     {loadingConnect == true ? <ActivityIndicator color="#00ff00" /> : <Text style={Style.textButton}> Iniciar </Text>}
                 </TouchableOpacity>
             </View>
+            <Text style={Style.textConnect}>{loadingConnect ? 'Aguarde enquanto conectamos a SmartOutlet!' : ''}</Text>
         </View>
     )
 }
@@ -111,26 +57,22 @@ const Home = (props) => {
 export default Home;
 
 const Style = StyleSheet.create({
-
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
     },
-
     title: {
         fontSize: 46,
         fontFamily: 'Roboto',
     },
-
     image: {
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.2)),
         height: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.2)),
         marginBottom: 60,
         marginTop: 40,
     },
-
     button: {
         backgroundColor: '#5A7FFD',
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.5)),
@@ -139,11 +81,14 @@ const Style = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-
     textButton: {
         color: 'white',
         fontSize: 20,
         textTransform: 'uppercase',
         letterSpacing: 2,
+    },
+    textConnect: {
+        marginTop: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.985)),
+        fontSize: 18
     }
 })

@@ -1,41 +1,55 @@
 import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
-import { Subscribe, SendStateChange } from './BluetoothSerial';
+import { changeOutletName, stateOutlet } from '../actions/index';
+import { SubscribeDevice, SendStateChange } from './BluetoothSerial';
 
 import {
+    Text,
     View,
     Image,
     StyleSheet,
-    Text,
-    TouchableOpacity,
     Dimensions,
+    TouchableOpacity,
 } from 'react-native';
 
 import Power from '../assets/images/power.png'
 
 import OutletOptions from './OutletOptions';
 
-import { stateOutlet } from '../actions/index';
-
 const Outlet = (props) => {
+    
     const nameOutlet = useSelector(state => state.outletName.outletName);
-    const state = useSelector(state => state.stateOutlet.state);
+
+    const state = useSelector(state => state.stateOutlet.stateOutlet);
+
     const dispatch = useDispatch();
-   
+    
     const changeStateOutlet = () => {
         dispatch(stateOutlet(!state));
         SendStateChange(!state);
     }
 
+    useEffect(async () => {
+        try {
+            let outletStorageName = await AsyncStorage.getItem('outletName');
+            if(outletStorageName !== null) {
+                dispatch(changeOutletName(outletStorageName));
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
+
     useEffect(() => {
         setInterval(() => {
-            Subscribe(dispatch, stateOutlet);
+            SubscribeDevice(dispatch, stateOutlet);
         }, 500);
-    }, [])
+    }, []);
 
     return (
-        <View>
-            <View>
+        <View style={Style.container}>
+            <View >
                 <Text style={Style.nameOutlet}>{nameOutlet}</Text>
             </View>
             <TouchableOpacity onPress={changeStateOutlet}>
@@ -55,11 +69,15 @@ const Style = StyleSheet.create({
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.6)),
         height: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.6)),
     },
-
     nameOutlet: {
         fontSize: 26,
         marginBottom: 10
     },
+    container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.92))
+    }
 });
 
 const StyleOutlet = (color) => StyleSheet.create({

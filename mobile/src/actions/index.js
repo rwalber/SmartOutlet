@@ -1,9 +1,14 @@
-export const changeOutletName = (updated_OutletName) => ({
+export const outletName = (outletName) => ({
   type: 'OUTLET_NAME',
-  outletName: updated_OutletName
+  outletName: outletName
 });
 
 export const stateOutlet = (stateOutlet) => ({
   type: 'STATE_OUTLET',
-  state: stateOutlet
+  stateOutlet: stateOutlet
+});
+
+export const modalOutletName = (visibility) => ({
+  type: 'MODAL_OUTLET_NAME',
+  modalOutletName: visibility
 });
