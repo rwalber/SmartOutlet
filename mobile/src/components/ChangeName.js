@@ -9,20 +9,20 @@ import {
     Text,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeOutletName, modalOutletName } from '../actions/index';
+import { outletName, modalOutletName } from '../actions/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ChangeName = () => {
 
-    const visibility = useSelector(state => state.modalOutletName.modalOutletName);
-
+    const visibility = useSelector(state => state.reducer.visibility);
+    
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
     const [changeNameOutlet, setChageNameOutlet] = useState('');
 
     const setNameOutlet = async () => {
         dispatch(modalOutletName(!visibility));
-        dispatch(changeOutletName(changeNameOutlet));
+        dispatch(outletName(changeNameOutlet));
         try {
             await AsyncStorage.setItem('outletName', changeNameOutlet);
         } catch (error) {
@@ -33,11 +33,6 @@ export const ChangeName = () => {
     const closeModal = () => {
         dispatch(modalOutletName(!visibility));
     }
-
-
-    // useEffect(() => {
-    //     setModalVisible(props.modalVisible);
-    // }, [])
 
     return (
         <Modal

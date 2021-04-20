@@ -1,28 +1,31 @@
-const INITIAL_STATE = {
-    outletName: '', 
-    modalOutletName: false,
-};
+// const INITIAL_STATE = {
+//     outletName: '',
+//     visibility: false,
+// };
 
-export const changeOutletName = (state = INITIAL_STATE.outletName, action) => {
-    switch (action.type) {
-        case 'OUTLET_NAME':
-            return {
-                ...state,
-                outletName: action.outletName
-            };
-        default:
-            return state;
-    }
-};
+// export const outletName = (state = INITIAL_STATE.outletName, action) => {
+//     switch (action.type) {
+//         case 'OUTLET_NAME':
+//             return {
+//                 ...state,
+//                 name: action.name
+//             };
+//         default:
+//             return state;
+//     }
+// };
 
-export const modalOutletName = (state = INITIAL_STATE.modalOutletName, action) => {
-    switch (action.type) {
-        case 'MODAL_OUTLET_NAME':
-            return {
-                ...state,
-                modalOutletName: action.modalOutletName
-            };
-        default:
-            return state;
-    }
-};
+// export const modalOutletName = (state = INITIAL_STATE.visibility, action) => {
+//     switch (action.type) {
+//         case 'MODAL_OUTLET_NAME':
+//             console.log(action);    
+//             return {
+//                 ...state,
+//                 visibility: action.visibility
+//             };
+//         default:
+//             console.log("action");
+//             return state;
+//     }
+// };
+

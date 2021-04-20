@@ -19,7 +19,7 @@ const OutletOptions = (props) => {
     
     const dispatch = useDispatch();
     
-    const visibility = useSelector(state => state.modalOutletName.modalOutletName);
+    const visibility = useSelector(state => state.reducer.visibility);
     
     const changeName = () => {
         dispatch(modalOutletName(!visibility));

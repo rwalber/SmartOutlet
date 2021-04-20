@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeOutletName, stateOutlet } from '../actions/index';
+import { outletName, stateOutlet } from '../actions/index';
 import { SubscribeDevice, SendStateChange } from './BluetoothSerial';
 
 import {
@@ -19,33 +19,34 @@ import OutletOptions from './OutletOptions';
 
 const Outlet = (props) => {
     
-    const nameOutlet = useSelector(state => state.outletName.outletName);
-
-    const state = useSelector(state => state.stateOutlet.stateOutlet);
+    const nameOutlet = useSelector(state => state.reducer.outletName);
+    const state = useSelector(state => state.reducer.state);
 
     const dispatch = useDispatch();
     
     const changeStateOutlet = () => {
         dispatch(stateOutlet(!state));
-        SendStateChange(!state);
+        // if(SendStateChange(!state)) {
+
+        // }
     }
 
     useEffect(async () => {
         try {
             let outletStorageName = await AsyncStorage.getItem('outletName');
             if(outletStorageName !== null) {
-                dispatch(changeOutletName(outletStorageName));
+                dispatch(outletName(outletStorageName));
             }
         } catch (error) {
             console.log(error);
         }
     }, []);
 
-    useEffect(() => {
-        setInterval(() => {
-            SubscribeDevice(dispatch, stateOutlet);
-        }, 500);
-    }, []);
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         SubscribeDevice(dispatch, stateOutlet);
+    //     }, 500);
+    // }, []);
 
     return (
         <View style={Style.container}>

@@ -37,15 +37,16 @@ export const Connect = async (navigation) => {
     return connected;
 }
 
-export const SendStateChange = (state) => {
-    BluetoothSerial.write('t')
+export const SendStateChange = async (state) => {
+    let changeState = false;
+    await BluetoothSerial.write('t')
         .then(() => {
-            console.log('send');
-            return true;
+            changeState = true;
         }).catch((err) => {
             Alert.alert("Erro ao enviar comando: " + err.message);
-            return false
+            changeState = false;
         });
+    return changeState;
 }
 
 export const SubscribeDevice = async (dispatch, stateOutlet) => {
