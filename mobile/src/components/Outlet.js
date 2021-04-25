@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import { outletName, stateOutlet } from '../actions/index';
 import { SubscribeDevice, SendStateChange } from './BluetoothSerial';
+// import PushNotification from "react-native-push-notification";
 
 import {
     Text,
@@ -11,6 +12,7 @@ import {
     StyleSheet,
     Dimensions,
     TouchableOpacity,
+    Button,
 } from 'react-native';
 
 import Power from '../assets/images/power.png'
@@ -43,6 +45,37 @@ const Outlet = (props) => {
     }, []);
 
     // useEffect(() => {
+    //     PushNotification.configure({
+    //         onRegister: function (token) {
+    //           console.log("TOKEN:", token);
+    //         },
+    //         onNotification: function (notification) {
+    //           console.log("NOTIFICATION:", notification);
+    //           notification.finish(PushNotificationIOS.FetchResult.NoData);
+    //         },
+    //         permissions: {
+    //           alert: true,
+    //           badge: true,
+    //           sound: true,
+    //         },
+    //         popInitialNotification: true,
+    //         requestPermissions: Platform.OS === 'ios',
+    //       });
+    // }, [])
+
+    // const testPush = () => {
+    //     console.log('enter')
+    //     PushNotification.localNotificationSchedule({
+    //         title:'My notification title',
+    //         date:new Date(new Date().getTime()+3000),
+    //         message:'My notification Message',
+    //         allowWhileIdle:false,
+    //         channelId: "your-channel-id"
+    //       });
+    //     console.log('pass')
+    // }
+
+    // useEffect(() => {
     //     setInterval(() => {
     //         SubscribeDevice(dispatch, stateOutlet);
     //     }, 500);
@@ -59,6 +92,9 @@ const Outlet = (props) => {
                 </View>
             </TouchableOpacity>
             <OutletOptions navigation={props.navigation} />
+            {/* <TouchableOpacity onPress={testPush}>
+                <Text>Push</Text>
+            </TouchableOpacity> */}
         </View>
     )
 }

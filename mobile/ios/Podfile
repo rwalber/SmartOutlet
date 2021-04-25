@@ -16,6 +16,10 @@ target 'mobile' do
 
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'react-native-notifications', :path => '../node_modules/react-native-notifications'
+
   target 'mobileTests' do
     inherit! :complete
     # Pods for testing

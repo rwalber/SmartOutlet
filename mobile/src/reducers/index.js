@@ -1,8 +1,5 @@
 import { combineReducers } from 'redux';
 
-import { outletName, modalOutletName } from './OutletName';
-import { stateOutlet } from './StateOutlet';
-
 const INITIAL_STATE = {
   outletName: '',
   visibility: false,
@@ -29,7 +26,6 @@ export const reducer = (state = INITIAL_STATE, action) => {
     default:
       return state;
   }
-
 };
 
 export const Reducers = combineReducers({

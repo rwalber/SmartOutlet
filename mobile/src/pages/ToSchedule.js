@@ -89,21 +89,25 @@ const ToScheduleStyle = StyleSheet.create({
         justifyContent: 'center',
         height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.3)),
     },
+    
     image: {
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
         height: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
         marginBottom: 30
     },
+    
     rowItens: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
-        marginBottom: 30
+        marginTop: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.95))
     },
+
     textInput: {
-        fontSize: 120,
+        fontSize: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.78)),
     },
+    
     ScheduleButton: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -112,17 +116,20 @@ const ToScheduleStyle = StyleSheet.create({
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.6)),
         height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.94)),
     },
+    
     textScheduleButton: {
-        fontSize: 18,
-        letterSpacing: 1.5,
+        fontSize: 16,
+        letterSpacing: 1.2,
         color: 'white'
     },
+    
     containerClock: {
         alignItems: 'center',
         marginBottom: 30
     },
+    
     labelClock: {
         color: '#cec0c0',
-        marginTop: -35
+        marginTop: -(Dimensions.get('window').width - (Dimensions.get('window').width * 0.95))
     }
 });

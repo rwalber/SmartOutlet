@@ -11,7 +11,7 @@ import {
     Dimensions,
 } from 'react-native';
 
-import { ChangeName } from './ChangeName'
+import { ChangeName } from './ChangeName';
 
 const OutletOptions = (props) => {
 
@@ -35,11 +35,11 @@ const OutletOptions = (props) => {
                 <Icon name="alarm-check" size={iconSize} color="#00bfff" />
                 <Text>Programar</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => console.log("Alerta")} style={StyleOutletOptions.alignTextIcon}>
+            <TouchableOpacity onPress={() => props.navigation.navigate('Alert')} style={StyleOutletOptions.alignTextIcon}>
                 <Icon name="alert-box" size={iconSize} color="#dfe21d" />
                 <Text>Alertas</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => console.log("Estatistica")} style={StyleOutletOptions.alignTextIcon}>
+            <TouchableOpacity onPress={() => props.navigation.navigate('Statistics')} style={StyleOutletOptions.alignTextIcon}>
                 <Icon name="align-vertical-bottom" size={iconSize} color="#d63939" />
                 <Text>Estatísticas</Text>
             </TouchableOpacity>
