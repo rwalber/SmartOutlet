@@ -1,15 +1,12 @@
 import React from 'react';
-
 import { NavigationContainer } from '@react-navigation/native';
-
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Home from './Home';
-
-import OutletList from './Outlet-List';
-import ToSchedule from './ToSchedule';
-import Alert from './Alert';
-import Statistics from './Statistics';
+import Home from './pages/Home';
+import Alert from './pages/Alert';
+import OutletList from './pages/Outlet-List';
+import ToSchedule from './pages/ToSchedule';
+import Statistics from './pages/Statistics';
 
 const Navigation = () => {
   const Stack = createStackNavigator();

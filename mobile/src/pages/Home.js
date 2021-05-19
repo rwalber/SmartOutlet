@@ -1,7 +1,4 @@
-import
-    React,
-    { useState, useEffect }
-from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
     Text,
@@ -15,7 +12,7 @@ import {
 
 import logo from '../assets/images/Smart-home-bro.png'
 
-import { Connect, VerifyStateBluetooth } from '../components/BluetoothSerial';
+import { Connect, VerifyStateBluetooth } from '../utils/BluetoothSerial';
 
 const Home = (props) => {
     

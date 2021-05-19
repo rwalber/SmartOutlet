@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
     Modal,
     View,
@@ -8,9 +10,9 @@ import {
     Dimensions,
     Text,
 } from 'react-native';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { outletName, modalOutletName } from '../actions/index';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ChangeName = () => {
 

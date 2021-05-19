@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import { outletName, stateOutlet } from '../actions/index';
-import { SubscribeDevice, SendStateChange } from './BluetoothSerial';
-// import PushNotification from "react-native-push-notification";
+import { SubscribeDevice, SendStateChange } from '../utils/BluetoothSerial';
 
 import {
     Text,
@@ -91,7 +90,7 @@ const Outlet = (props) => {
                     <Image source={Power} style={Style.image} />
                 </View>
             </TouchableOpacity>
-            <OutletOptions navigation={props.navigation} />
+            {/* <OutletOptions navigation={props.navigation} /> */}
             {/* <TouchableOpacity onPress={testPush}>
                 <Text>Push</Text>
             </TouchableOpacity> */}

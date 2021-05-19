@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
     View,
     Text,
@@ -9,15 +10,24 @@ import {
     Image,
     Switch,
 } from 'react-native';
+
 import TimeManagement from '../assets/images/Time-management.png'
+
+import DropDownPicker from 'react-native-dropdown-picker';
+
+import { RadioButton } from 'react-native-paper';
+
 const ToSchedule = () => {
 
     const iconSize = (Dimensions.get('window').width - (Dimensions.get('window').width * 0.9));
+    const [selectedValue, setSelectedValue] = useState("java");
 
     const [hours, setHours] = useState();
     const [minuts, setMinuts] = useState();
     const [seconds, setSeconds] = useState();
     const [action, setAction] = useState();
+    
+    const [checked, setChecked] = React.useState('first');
 
     return (
         <View style={ToScheduleStyle.centerItens}>
@@ -60,19 +70,39 @@ const ToSchedule = () => {
                     <Text style={ToScheduleStyle.labelClock}>segundos</Text>
                 </View>
             </View>
-            {/* <View>
-                <Text>Função</Text>
-                <View style={ToScheduleStyle.rowItens}>
-                    <Text>Off</Text>
-                    <Switch
-                        trackColor={{ false: "red", true: "#5ef75b" }}
-                        thumbColor={action ? "#5ef75b" : "red"}
-                        onValueChange={setAction}
-                        value={action}
-                    />
-                    <Text>On</Text>
-                </View>
-            </View> */}
+            <Text style={ToScheduleStyle.sessionTitle}>
+                Selecione a tomada
+            </Text>
+            <View style={ToScheduleStyle.rowItens}>
+                <RadioButton
+                    value="first"
+                    status={ checked === 'first' ? 'checked' : 'unchecked' }
+                    onPress={() => setChecked('first')}
+                />
+                <Text>Tomada 2</Text>
+                <RadioButton
+                    value="second"
+                    status={ checked === 'second' ? 'checked' : 'unchecked' }
+                    onPress={() => setChecked('second')}
+                    style={ToScheduleStyle.radioText}
+                />
+                <Text>Tomada 1</Text>
+            </View>
+            <Text style={ToScheduleStyle.sessionTitle}>
+                Função desejada
+            </Text>
+            <View style={ToScheduleStyle.rowItens}>
+                <Text>Desligar</Text>
+                <Switch
+                    trackColor={{ false: "red", true: "#5ef75b" }}
+                    thumbColor={action ? "#5ef75b" : "red"}
+                    onValueChange={setAction}
+                    value={action}
+                    style={{margin: 0, padding: 0}}
+                />
+                <Text>Ligar</Text>
+            </View>
+
             <TouchableOpacity style={ToScheduleStyle.ScheduleButton}>
                 <Text style={ToScheduleStyle.textScheduleButton}>Agendar</Text>
             </TouchableOpacity>
@@ -85,23 +115,40 @@ export default ToSchedule;
 const ToScheduleStyle = StyleSheet.create({
     centerItens: {
         flex: 1,
+        display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        // width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.1)),
         height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.3)),
+        // backgroundColor: 'black'
     },
     
     image: {
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
         height: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
-        marginBottom: 30
+        // marginBottom: 30,
+        // alignItems: 'center',
     },
     
     rowItens: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
-        width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
+        // justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'red',
+        width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.1)),
         marginTop: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.95))
+    },
+
+    sessionTitle: {
+        fontSize: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.95)),
+        // marginLeft: 20,
+        // backgroundColor: 'blue',
+        width: '100%'
+    },
+
+    radioText: {
+        fontSize: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.92)),
     },
 
     textInput: {
@@ -125,7 +172,7 @@ const ToScheduleStyle = StyleSheet.create({
     
     containerClock: {
         alignItems: 'center',
-        marginBottom: 30
+        // marginBottom: 30
     },
     
     labelClock: {

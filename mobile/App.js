@@ -1,9 +1,10 @@
 import React from 'react';
-import Navigation from './src/pages/Navigation';
+import Navigation from './src/Navigation';
 
 import { Store } from './src/store/index';
 import { Provider } from 'react-redux';
-import ConfigureLocalNotification from './src/components/LocalNotification';
+
+import ConfigureLocalNotification from './src/utils/LocalNotification';
 
 const App = () => {
   
