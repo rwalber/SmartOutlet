@@ -9,7 +9,7 @@ import ConfigureLocalNotification from './src/utils/LocalNotification';
 const App = () => {
   
   ConfigureLocalNotification();
-  
+
   return (
     <Provider store={Store}>
       <Navigation />

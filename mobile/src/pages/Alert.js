@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { 
+    useState 
+} from 'react';
+
 import { 
     View, 
     StyleSheet, 
@@ -6,128 +9,142 @@ import {
     Image,
     Dimensions,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    ImageBackground,
+    Alert
 } from 'react-native';
 
-import logo from '../assets/images/Alert.png'
-import { useSelector } from 'react-redux';
-
 import PushNotification from "react-native-push-notification";
+import { useDispatch, useSelector } from 'react-redux';
 
-const Alert = () => {
+import logo from '../assets/images/Alert.png'
+import Background from '../assets/images/b1.png';
 
-    const name = useSelector(state => state.reducer.outletName)
+const toAlert = () => {
 
-    const [hours, setHours] = useState();
-    const [minuts, setMinuts] = useState();
-    const [seconds, setSeconds] = useState();
+    const dispatch = useDispatch();
 
-    const Push = () => {
+    const [hours, setHours] = useState(0);
+    const [minuts, setMinuts] = useState(0);
+    const [seconds, setSeconds] = useState(0);
+
+    const state = useSelector(state => state.reducer.state);
+
+    const push = () => {
         PushNotification.localNotification({
             channelId: '_outletNotify',
-            title: 'Local Notification', // (optional)
-            message: 'My Notification Message', // (required)
+            title: 'Atenção',
+            message: `A SmartOutlet está ${state ? 'ativada' : 'desativada'}!`,
         });
+    }
+
+    const defineAlert = () => {
+        
+        if(seconds != 0 || minuts != 0 || hours != 0) {
+            let time = (Number(seconds) + Number(minuts * 60) + Number(hours * 60 * 60))*1000;
+            setTimeout(push, Number(time));
+            Alert.alert(
+                "Aviso",
+                "Alerta definido com sucesso!",
+                [
+                    {
+                        text: "OK", onPress: async () => {
+                            
+                        }
+                    }
+                ]
+            );
+            setHours(0);
+            setMinuts(0);
+            setSeconds(0);
+        } else {
+            Alert.alert("Aviso", "É necessário definir um intervalo para o alerta!");
+        }
     }
     
     return (
-        <View style={StyleAlert.container}>
-            <Text>
-                Aqui você pade definir alertas inteligêntes para a outlet <Text style={StyleAlert.bold}>{name}</Text>!
-            </Text>
-            <Image style={StyleAlert.image} source={logo} />
-            <View style={StyleAlert.rowItens}>
-                <View style={StyleAlert.containerClock}>
-                    <TextInput
-                        style={StyleAlert.textInput}
-                        placeholder="00"
-                        placeholderTextColor="rgb(73, 143, 255)"
-                        onChangeText={setHours}
-                        value={hours}
-                        keyboardType={'numeric'}
-                        maxLength={2}
-                    />
-                    <Text style={StyleAlert.labelClock}>horas</Text>
+        <ImageBackground source={Background} style={StyleAlert.bgImage}>
+            <View style={StyleAlert.container}>
+                <Image style={StyleAlert.image} source={logo} />
+                <View style={StyleAlert.rowItens}>
+                    <View style={StyleAlert.containerClock}>
+                        <TextInput
+                            style={StyleAlert.textInput}
+                            placeholder="00"
+                            placeholderTextColor="rgb(255, 255, 255)"
+                            onChangeText={setHours}
+                            value={hours}
+                            keyboardType={'numeric'}
+                            maxLength={2}
+                        />
+                        <Text style={StyleAlert.labelClock}>horas</Text>
+                    </View>
+                    <View style={StyleAlert.containerClock}>
+                        <TextInput
+                            style={StyleAlert.textInput}
+                            placeholder="00"
+                            placeholderTextColor="rgb(255, 255, 255)"
+                            onChangeText={setMinuts}
+                            value={minuts}
+                            keyboardType={'numeric'}
+                            maxLength={2}
+                            
+                        />
+                        <Text style={StyleAlert.labelClock}>minutos</Text>
+                    </View>
+                    <View style={StyleAlert.containerClock}>
+                        <TextInput
+                            style={StyleAlert.textInput}
+                            placeholder="00"
+                            placeholderTextColor="rgb(255, 255, 255)"
+                            onChangeText={setSeconds}
+                            value={seconds}
+                            keyboardType={'numeric'}
+                            maxLength={2}
+                        />
+                        <Text style={StyleAlert.labelClock}>segundos</Text>
+                    </View>
                 </View>
-                <View style={StyleAlert.containerClock}>
-                    <TextInput
-                        style={StyleAlert.textInput}
-                        placeholder="00"
-                        placeholderTextColor="rgb(73, 143, 255)"
-                        onChangeText={setMinuts}
-                        value={minuts}
-                        keyboardType={'numeric'}
-                        maxLength={2}
-                    />
-                    <Text style={StyleAlert.labelClock}>minutos</Text>
-                </View>
-                <View style={StyleAlert.containerClock}>
-                    <TextInput
-                        style={StyleAlert.textInput}
-                        placeholder="00"
-                        placeholderTextColor="rgb(73, 143, 255)"
-                        onChangeText={setSeconds}
-                        value={seconds}
-                        keyboardType={'numeric'}
-                        maxLength={2}
-                    />
-                    <Text style={StyleAlert.labelClock}>segundos</Text>
-                </View>
+                <TouchableOpacity style={StyleAlert.button} onPress = { defineAlert }>
+                    <Text style={StyleAlert.textButton}>
+                        Definir alerta
+                    </Text>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity style={StyleAlert.button} onPress = { Push  }>
-                <Text style={StyleAlert.textButton}>
-                    Definir alerta
-                </Text>
-            </TouchableOpacity>
-
-
-        </View>
+        </ImageBackground>
     )
 }
 
-export default Alert;
+export default toAlert;
 
 const StyleAlert = StyleSheet.create({
-    container: {
+    bgImage: {
         flex: 1,
+        resizeMode: "cover",
+    },
+    container: {
         alignItems: 'center',
-        justifyContent: 'center',
         height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.3)),
     },
-
-    bold: {
-        fontWeight: 'bold',
-    },
-
     image: {
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
         height: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
-        marginTop: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.8))
+        marginTop: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.85)),
     },
-
     button: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgb(73, 143, 255)',
-        borderRadius: 20,
+        backgroundColor: 'white',
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.6)),
-        height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.94)),
-        marginTop: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.8)),
-    },
-
-    textButton: {
-        fontSize: 16,
-        letterSpacing: 1.2,
-        color: 'white'
-    },
-
-    centerItens: {
-        flex: 1,
+        height: 45,
+        borderRadius: 15,
         alignItems: 'center',
         justifyContent: 'center',
-        height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.3)),
+        marginTop: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.94))
     },
-
+    textButton: {
+        color: 'black',
+        fontSize: 18,
+        letterSpacing: 1,
+    },
     rowItens: {
         display: 'flex',
         flexDirection: 'row',
@@ -135,15 +152,12 @@ const StyleAlert = StyleSheet.create({
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
         marginTop: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.95))
     },
-
     textInput: {
         fontSize: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.78)),
     },
-
     containerClock: {
         alignItems: 'center',
     },
-
     labelClock: {
         color: '#cec0c0',
         marginTop: -(Dimensions.get('window').width - (Dimensions.get('window').width * 0.95))

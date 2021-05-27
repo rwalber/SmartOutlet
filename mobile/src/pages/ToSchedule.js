@@ -1,182 +1,229 @@
-import React, { useState } from 'react';
+import React, { 
+    useState 
+} from 'react';
 
 import {
     View,
     Text,
+    Alert,
+    Image,
     TextInput,
     Dimensions,
     StyleSheet,
+    ImageBackground,
     TouchableOpacity,
-    Image,
-    Switch,
 } from 'react-native';
 
-import TimeManagement from '../assets/images/Time-management.png'
+import { useDispatch } from 'react-redux';
+import { stateOutlet } from '../actions/index';
+import PushNotification from "react-native-push-notification";
 
-import DropDownPicker from 'react-native-dropdown-picker';
-
-import { RadioButton } from 'react-native-paper';
+import TimeManagement from '../assets/images/toSchedule.png'
+import Background from '../assets/images/b1.png';
 
 const ToSchedule = () => {
-
-    const iconSize = (Dimensions.get('window').width - (Dimensions.get('window').width * 0.9));
-    const [selectedValue, setSelectedValue] = useState("java");
-
-    const [hours, setHours] = useState();
-    const [minuts, setMinuts] = useState();
-    const [seconds, setSeconds] = useState();
-    const [action, setAction] = useState();
     
-    const [checked, setChecked] = React.useState('first');
+    const [hours, setHours] = useState(0);
+    const [minuts, setMinuts] = useState(0);
+    const [seconds, setSeconds] = useState(0);
+    const [action, setAction] = useState(false);
+
+    const dispatch = useDispatch();
+    
+    const togglerSwitch = () => {
+        setAction(!action);
+    }
+
+    const push = () => {
+        PushNotification.localNotification({
+            channelId: '_outletNotify',
+            title: 'Aviso',
+            message: `A SmartOutlet foi ${action ? 'ativada' : 'desativada'} com sucesso!`,
+        });
+    }
+
+    const confirmSchedule = () => {
+        if(seconds != 0 || minuts != 0 || hours != 0) {
+            Alert.alert(
+                "Aviso",
+                "Deseja programar a tomada para realizar a ação definida?",
+                [
+                    {
+                        text: "Não",
+                        style: "cancel"
+                    },
+                    {
+                        text: "Sim", onPress: async () => {
+                            schedule();
+                        }
+                    }
+                ]
+            );
+        } else {
+            Alert.alert("Aviso", "É necessário definir um intervalo para programar a tomada!");
+        }
+    }
+
+    const schedule = () => {
+        let time = (Number(seconds) + Number(minuts * 60) + Number(hours * 60 * 60))*1000;
+        setTimeout(() => {
+            let state = action;
+            dispatch(stateOutlet(state));
+            push();
+        }, Number(time));
+        setHours(0);
+        setMinuts(0);
+        setSeconds(0);
+        setAction(!action);
+    }
 
     return (
-        <View style={ToScheduleStyle.centerItens}>
-            <Image source={TimeManagement} style={ToScheduleStyle.image} />
-            <View style={ToScheduleStyle.rowItens}>
-                <View style={ToScheduleStyle.containerClock}>
-                    <TextInput
-                        style={ToScheduleStyle.textInput}
-                        placeholder="00"
-                        placeholderTextColor="rgb(73, 143, 255)"
-                        onChangeText={setHours}
-                        value={hours}
-                        keyboardType={'numeric'}
-                        maxLength={2}
-                    />
-                    <Text style={ToScheduleStyle.labelClock}>horas</Text>
+        <ImageBackground source={Background} style={ToScheduleStyle.bgImage}>
+            <View style={ToScheduleStyle.centerItens}>
+                <Image source={TimeManagement} style={ToScheduleStyle.image} resizeMode="contain" />
+                <View style={ToScheduleStyle.rowItens}>
+                    <View style={ToScheduleStyle.containerClock}>
+                        <TextInput
+                            style={ToScheduleStyle.textInput}
+                            placeholder="00"
+                            placeholderTextColor="rgb(255, 255, 255)"
+                            onChangeText={setHours}
+                            value={hours}
+                            keyboardType={'numeric'}
+                            maxLength={2}
+                        />
+                        <Text style={ToScheduleStyle.labelClock}>horas</Text>
+                    </View>
+                    <View style={ToScheduleStyle.containerClock}>
+                        <TextInput
+                            style={ToScheduleStyle.textInput}
+                            placeholder="00"
+                            placeholderTextColor="rgb(255, 255, 255)"
+                            onChangeText={setMinuts}
+                            value={minuts}
+                            keyboardType={'numeric'}
+                            maxLength={2}
+                        />
+                        <Text style={ToScheduleStyle.labelClock}>minutos</Text>
+                    </View>
+                    <View style={ToScheduleStyle.containerClock}>
+                        <TextInput
+                            style={ToScheduleStyle.textInput}
+                            placeholder="00"
+                            placeholderTextColor="rgb(255, 255, 255)"
+                            onChangeText={setSeconds}
+                            value={seconds}
+                            keyboardType={'numeric'}
+                            maxLength={2}
+                        />
+                        <Text style={ToScheduleStyle.labelClock}>segundos</Text>
+                    </View>
                 </View>
-                <View style={ToScheduleStyle.containerClock}>
-                    <TextInput
-                        style={ToScheduleStyle.textInput}
-                        placeholder="00"
-                        placeholderTextColor="rgb(73, 143, 255)"
-                        onChangeText={setMinuts}
-                        value={minuts}
-                        keyboardType={'numeric'}
-                        maxLength={2}
-                    />
-                    <Text style={ToScheduleStyle.labelClock}>minutos</Text>
+                <View style={ToScheduleStyle.swtitchContainer}>
+                    <Text style={ToScheduleStyle.textSwtichContainer}>Desligar</Text>
+                    <TouchableOpacity style={action ? ToScheduleStyle.switchOn : ToScheduleStyle.switchOff} onPress={togglerSwitch}>
+                        <View style={action ? ToScheduleStyle.togglerOn : ToScheduleStyle.togglerOff} />
+                    </TouchableOpacity>
+                    <Text style={ToScheduleStyle.textSwtichContainer}>Ligar</Text>
                 </View>
-                <View style={ToScheduleStyle.containerClock}>
-                    <TextInput
-                        style={ToScheduleStyle.textInput}
-                        placeholder="00"
-                        placeholderTextColor="rgb(73, 143, 255)"
-                        onChangeText={setSeconds}
-                        value={seconds}
-                        keyboardType={'numeric'}
-                        maxLength={2}
-                    />
-                    <Text style={ToScheduleStyle.labelClock}>segundos</Text>
-                </View>
+                <TouchableOpacity style={ToScheduleStyle.button} onPress={confirmSchedule}>
+                    <Text style={ToScheduleStyle.textButton}>Agendar</Text>
+                </TouchableOpacity>
             </View>
-            <Text style={ToScheduleStyle.sessionTitle}>
-                Selecione a tomada
-            </Text>
-            <View style={ToScheduleStyle.rowItens}>
-                <RadioButton
-                    value="first"
-                    status={ checked === 'first' ? 'checked' : 'unchecked' }
-                    onPress={() => setChecked('first')}
-                />
-                <Text>Tomada 2</Text>
-                <RadioButton
-                    value="second"
-                    status={ checked === 'second' ? 'checked' : 'unchecked' }
-                    onPress={() => setChecked('second')}
-                    style={ToScheduleStyle.radioText}
-                />
-                <Text>Tomada 1</Text>
-            </View>
-            <Text style={ToScheduleStyle.sessionTitle}>
-                Função desejada
-            </Text>
-            <View style={ToScheduleStyle.rowItens}>
-                <Text>Desligar</Text>
-                <Switch
-                    trackColor={{ false: "red", true: "#5ef75b" }}
-                    thumbColor={action ? "#5ef75b" : "red"}
-                    onValueChange={setAction}
-                    value={action}
-                    style={{margin: 0, padding: 0}}
-                />
-                <Text>Ligar</Text>
-            </View>
-
-            <TouchableOpacity style={ToScheduleStyle.ScheduleButton}>
-                <Text style={ToScheduleStyle.textScheduleButton}>Agendar</Text>
-            </TouchableOpacity>
-        </View>
+        </ImageBackground>
     )
 }
 
 export default ToSchedule;
 
 const ToScheduleStyle = StyleSheet.create({
-    centerItens: {
+    bgImage: {
         flex: 1,
-        display: 'flex',
+        resizeMode: "cover",
+    },
+    centerItens: {
         alignItems: 'center',
         justifyContent: 'center',
-        // width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.1)),
         height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.3)),
-        // backgroundColor: 'black'
     },
-    
     image: {
-        width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
-        height: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.4)),
-        // marginBottom: 30,
-        // alignItems: 'center',
+        width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.2)),
+        height: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.2)),
+        marginTop: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.85)),
     },
-    
     rowItens: {
         display: 'flex',
         flexDirection: 'row',
-        // justifyContent: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'red',
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.1)),
         marginTop: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.95))
     },
-
-    sessionTitle: {
-        fontSize: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.95)),
-        // marginLeft: 20,
-        // backgroundColor: 'blue',
-        width: '100%'
-    },
-
-    radioText: {
-        fontSize: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.92)),
-    },
-
     textInput: {
         fontSize: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.78)),
     },
-    
-    ScheduleButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgb(73, 143, 255)',
-        borderRadius: 20,
-        width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.6)),
-        height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.94)),
-    },
-    
-    textScheduleButton: {
-        fontSize: 16,
-        letterSpacing: 1.2,
-        color: 'white'
-    },
-    
     containerClock: {
         alignItems: 'center',
-        // marginBottom: 30
     },
-    
     labelClock: {
         color: '#cec0c0',
         marginTop: -(Dimensions.get('window').width - (Dimensions.get('window').width * 0.95))
-    }
+    },
+    swtitchContainer: {
+        marginTop: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.94)),
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    textSwtichContainer: {
+        marginRight: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.95)),
+        marginLeft: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.95)),
+        color: 'white',
+        fontSize: 18
+    },
+    switchOn: {
+        width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.7)),
+        height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.95)),
+        borderRadius: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.65))/2,
+        backgroundColor: '#92E3A9',
+        justifyContent: 'center',
+    },
+    switchOff: {
+        width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.7)),
+        height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.95)),
+        borderRadius: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.65))/2,
+        backgroundColor: 'red',
+        justifyContent: 'center',
+    },
+    togglerOn: {
+        width: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.96)),
+        height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.96)),
+        borderRadius: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.65))/2,
+        backgroundColor:'rgba(255, 255, 255, 0.9)',
+        position: 'absolute',
+        right: 0,
+        marginRight: 5
+    },
+    togglerOff: {
+        width: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.96)),
+        height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.96)),
+        borderRadius: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.65))/2,
+        backgroundColor: 'white',
+        marginLeft: 5
+    },
+    button: {
+        backgroundColor: 'white',
+        width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.6)),
+        height: 45,
+        borderRadius: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.94))
+    },
+    textButton: {
+        color: 'black',
+        fontSize: 18,
+        letterSpacing: 1,
+    },
 });
