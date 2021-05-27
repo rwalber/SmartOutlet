@@ -67,11 +67,42 @@ const Outlet = (props) => {
         }
     }, []);
 
-    useEffect(() => {
-        setInterval(() => {
-            SubscribeDevice(dispatch, stateOutlet);
-        }, 500);
-    }, []);
+    // useEffect(() => {
+    //     PushNotification.configure({
+    //         onRegister: function (token) {
+    //           console.log("TOKEN:", token);
+    //         },
+    //         onNotification: function (notification) {
+    //           console.log("NOTIFICATION:", notification);
+    //           notification.finish(PushNotificationIOS.FetchResult.NoData);
+    //         },
+    //         permissions: {
+    //           alert: true,
+    //           badge: true,
+    //           sound: true,
+    //         },
+    //         popInitialNotification: true,
+    //         requestPermissions: Platform.OS === 'ios',
+    //       });
+    // }, [])
+
+    // const testPush = () => {
+    //     console.log('enter')
+    //     PushNotification.localNotificationSchedule({
+    //         title:'My notification title',
+    //         date:new Date(new Date().getTime()+3000),
+    //         message:'My notification Message',
+    //         allowWhileIdle:false,
+    //         channelId: "your-channel-id"
+    //       });
+    //     console.log('pass')
+    // }
+
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         SubscribeDevice(dispatch, stateOutlet);
+    //     }, 500);
+    // }, []);
 
     return (
         <View style={Style.container}>
