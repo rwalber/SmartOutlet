@@ -11,8 +11,8 @@ export const Connect = async (navigation) => {
     await BluetoothSerial.isEnabled().then(isEnable => {
         if (!isEnable) {
             Alert.alert(
-                "Ativação do Bluetooth",
-                "Para uso deste aplicativo é necessário ativar o Bluetooth, deseja ativar?",
+                "Atenção",
+                "Este aplicativo faz uso do dispositivo Bluetooth, deseja ativar?",
                 [
                     {
                         text: "Não",
@@ -39,7 +39,7 @@ export const Connect = async (navigation) => {
 
 export const SendStateChange = async (state) => {
     let changeState = false;
-    await BluetoothSerial.write('t')
+    await BluetoothSerial.write('h')
         .then(() => {
             changeState = true;
         }).catch((err) => {
@@ -64,8 +64,8 @@ export const VerifyStateBluetooth = async () => {
     await BluetoothSerial.isEnabled().then(isEnable => {
         if (!isEnable) {
             Alert.alert(
-                "Ativação do Bluetooth",
-                "Para uso deste aplicativo é necessário ativar o Bluetooth, deseja ativar?",
+                "Atenção",
+                "Este aplicativo faz uso do dispositivo Bluetooth, deseja ativar?",
                 [
                     {
                         text: "Não",

@@ -4,6 +4,11 @@ const INITIAL_STATE = {
   outletName: '',
   visibility: false,
   state: false,
+  voltage: 127,
+  potency: 30,
+  spent: 0,
+  timeOn: 0,
+  arraySpent: [0]
 };
 
 export const reducer = (state = INITIAL_STATE, action) => {
@@ -22,6 +27,31 @@ export const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         state: action.state
+      };
+    case 'VOLTAGE':
+      return {
+        ...state,
+        voltage: action.voltage
+      };
+    case 'POTENCY':
+      return {
+        ...state,
+        potency: action.potency
+      };
+    case 'SPENT':
+      return {
+        ...state,
+        spent: action.spent
+      };
+      case 'SET_TIME':
+      return {
+        ...state,
+        timeOn: action.timeOn
+      };
+      case 'ARRAY_SPENT':
+      return {
+        ...state,
+        arraySpent: state.arraySpent.length == 10 ? [0, action.arraySpent] : [...state.arraySpent, action.arraySpent]
       };
     default:
       return state;
