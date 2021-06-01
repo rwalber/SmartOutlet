@@ -1,10 +1,10 @@
-export const outletName = (newOutletName) => ({
-  type: 'OUTLET_NAME',
+export const outletName = (newOutletName, index) => ({
+  type: `OUTLET_NAME_${index}`,
   name: newOutletName
 });
 
-export const stateOutlet = (newStateOutlet) => ({
-  type: 'STATE_OUTLET',
+export const stateOutlet = (newStateOutlet,  index) => ({
+  type: `STATE_OUTLET_${index}`,
   state: newStateOutlet
 });
 

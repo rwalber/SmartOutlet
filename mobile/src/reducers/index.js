@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 
 const INITIAL_STATE = {
-  outletName: '',
+  outletName1: 'Tomada 1',
+  outletName2: 'Tomada 2',
   visibility: false,
-  state: false,
+  state1: false,
+  state2: false,
   voltage: 127,
   potency: 30,
   spent: 0,
@@ -13,20 +15,30 @@ const INITIAL_STATE = {
 
 export const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'OUTLET_NAME':
+    case 'OUTLET_NAME_1':
       return {
         ...state,
-        outletName: action.name
+        outletName1: action.name
+      };
+      case 'OUTLET_NAME_2':
+      return {
+        ...state,
+        outletName2: action.name
       };
     case 'MODAL_OUTLET_NAME':
       return {
         ...state,
         visibility: action.visibility
       };
-    case 'STATE_OUTLET':
+    case 'STATE_OUTLET_1':
       return {
         ...state,
-        state: action.state
+        state1: action.state
+      };
+      case 'STATE_OUTLET_2':
+      return {
+        ...state,
+        state2: action.state
       };
     case 'VOLTAGE':
       return {

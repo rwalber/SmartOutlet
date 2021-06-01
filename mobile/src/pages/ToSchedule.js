@@ -23,9 +23,9 @@ import Background from '../assets/images/b1.png';
 
 const ToSchedule = () => {
     
-    const [hours, setHours] = useState(0);
-    const [minuts, setMinuts] = useState(0);
-    const [seconds, setSeconds] = useState(0);
+    const [hours, setHours] = useState('');
+    const [minuts, setMinuts] = useState('');
+    const [seconds, setSeconds] = useState('');
     const [action, setAction] = useState(false);
 
     const dispatch = useDispatch();
@@ -71,9 +71,9 @@ const ToSchedule = () => {
             dispatch(stateOutlet(state));
             push();
         }, Number(time));
-        setHours(0);
-        setMinuts(0);
-        setSeconds(0);
+        setHours('');
+        setMinuts('');
+        setSeconds('');
         setAction(false);
     }
 
@@ -87,7 +87,7 @@ const ToSchedule = () => {
                             style={ToScheduleStyle.textInput}
                             placeholder="00"
                             onChangeText={setHours}
-                            value={hours}
+                            value={hours.toString()}
                             keyboardType={'numeric'}
                             maxLength={2}
                             placeholderTextColor="white"
@@ -99,7 +99,7 @@ const ToSchedule = () => {
                             style={ToScheduleStyle.textInput}
                             placeholder="00"
                             onChangeText={setMinuts}
-                            value={minuts}
+                            value={minuts.toString()}
                             keyboardType={'numeric'}
                             maxLength={2}
                             placeholderTextColor="white"
@@ -111,7 +111,7 @@ const ToSchedule = () => {
                             style={ToScheduleStyle.textInput}
                             placeholder="00"
                             onChangeText={setSeconds}
-                            value={seconds}
+                            value={seconds.toString()}
                             keyboardType={'numeric'}
                             maxLength={2}
                             placeholderTextColor="white"

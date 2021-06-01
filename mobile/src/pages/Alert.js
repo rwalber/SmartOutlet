@@ -24,9 +24,9 @@ const toAlert = () => {
 
     const dispatch = useDispatch();
 
-    const [hours, setHours] = useState(0);
-    const [minuts, setMinuts] = useState(0);
-    const [seconds, setSeconds] = useState(0);
+    const [hours, setHours] = useState('');
+    const [minuts, setMinuts] = useState('');
+    const [seconds, setSeconds] = useState('');
 
     const state = useSelector(state => state.reducer.state);
 
@@ -54,9 +54,9 @@ const toAlert = () => {
                     }
                 ]
             );
-            setHours(0);
-            setMinuts(0);
-            setSeconds(0);
+            setHours('');
+            setMinuts('');
+            setSeconds('');
         } else {
             Alert.alert("Aviso", "É necessário definir um intervalo para o alerta!");
         }
@@ -73,7 +73,7 @@ const toAlert = () => {
                             placeholder="00"
                             placeholderTextColor="rgb(255, 255, 255)"
                             onChangeText={setHours}
-                            value={hours}
+                            value={hours.toString()}
                             keyboardType={'numeric'}
                             maxLength={2}
                         />
@@ -85,7 +85,7 @@ const toAlert = () => {
                             placeholder="00"
                             placeholderTextColor="rgb(255, 255, 255)"
                             onChangeText={setMinuts}
-                            value={minuts}
+                            value={minuts.toString()}
                             keyboardType={'numeric'}
                             maxLength={2}
                             
@@ -98,7 +98,7 @@ const toAlert = () => {
                             placeholder="00"
                             placeholderTextColor="rgb(255, 255, 255)"
                             onChangeText={setSeconds}
-                            value={seconds}
+                            value={seconds.toString()}
                             keyboardType={'numeric'}
                             maxLength={2}
                         />

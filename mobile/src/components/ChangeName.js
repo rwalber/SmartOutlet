@@ -14,19 +14,18 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { outletName, modalOutletName } from '../actions/index';
 
-export const ChangeName = () => {
-
+export const ChangeName = (props) => {
     const visibility = useSelector(state => state.reducer.visibility);
     
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
     const [changeNameOutlet, setChageNameOutlet] = useState('');
-
+    
     const setNameOutlet = async () => {
         dispatch(modalOutletName(!visibility));
-        dispatch(outletName(changeNameOutlet));
+        dispatch(outletName(changeNameOutlet, props.index));
         try {
-            await AsyncStorage.setItem('outletName', changeNameOutlet);
+            await AsyncStorage.setItem(`outletName${props.index}`, changeNameOutlet);
         } catch (error) {
             console.log(error);
         }
@@ -53,6 +52,7 @@ export const ChangeName = () => {
                         onChangeText={setChageNameOutlet}
                         value={changeNameOutlet}
                         placeholder="Insira um nome para sua Outlet!"
+                        placeholderTextColor="black"
                     />
                     <View style={StyleOutletOptions.containerButtonModal}>
                         <TouchableOpacity style={StyleOutletOptions.cancelButtonModal} onPress={() => closeModal()}>

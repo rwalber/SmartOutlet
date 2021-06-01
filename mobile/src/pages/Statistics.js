@@ -138,7 +138,7 @@ const StyleStatistics = StyleSheet.create({
         width: (Dimensions.get('window').width - (Dimensions.get('window').width * 0.1)),
         height: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.75)),
         marginTop: (Dimensions.get('window').height - (Dimensions.get('window').height * 0.9)),
-        // backgroundColor: 'white',
+        backgroundColor: 'white',
     },
     outletFeature: {
         display: 'flex',

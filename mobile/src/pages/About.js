@@ -22,7 +22,7 @@ const About = ()  => {
             <View style={StyleAbout.content}>
                 <Text style={StyleAbout.text}>Desenvolvedor: Walber C J Rocha</Text>
                 <Text style={StyleAbout.text}>walber_jesus@hotmail.com</Text>
-                <Text style={StyleAbout.text}>Licensa de uso: MIT</Text>
+                {/* <Text style={StyleAbout.text}>Licença de uso: MIT</Text> */}
                 <Text style={StyleAbout.textGit} onPress={() => Linking.openURL('https://github.com/rwalber/SmartOutlet')}>Github do Projeto</Text>
             </View>
         </ImageBackground>

@@ -45,9 +45,9 @@ analogWrite(RED, 200);
 //      digitalWrite(LED_1, STATE_BUTTON_1);
       digitalWrite(OUTLET_1, STATE_BUTTON_1);
       if(STATE_BUTTON_1 == 1) {
-        COMM.print("On");
+        COMM.print("On1");
       } else {
-        COMM.print("Off");
+        COMM.print("Off1");
       }
       while(digitalRead(BUTTON_1) == LOW);
       delay(100);
@@ -58,9 +58,9 @@ analogWrite(RED, 200);
 //      digitalWrite(LED_2, STATE_BUTTON_2);
       digitalWrite(OUTLET_2, STATE_BUTTON_2);
       if(STATE_BUTTON_2 == 1) {
-        COMM.print("On");
+        COMM.print("On2");
       } else {
-        COMM.print("Off");
+        COMM.print("Off2");
       }
       while(digitalRead(BUTTON_2) == LOW);
       delay(100);

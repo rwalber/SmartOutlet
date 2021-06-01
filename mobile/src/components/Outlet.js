@@ -9,14 +9,15 @@ import {
     StyleSheet,
     Dimensions,
     TouchableOpacity,
+    Alert
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
-import { outletName, stateOutlet, modalOutletName, setTimeOn, arraySpent } from '../actions/index';
 import { SubscribeDevice, SendStateChange } from '../utils/BluetoothSerial';
+import { outletName, stateOutlet, modalOutletName, setTimeOn, arraySpent } from '../actions/index';
 
-import Power from '../assets/images/plug.png'
+import Power from '../assets/images/plug.png';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { ChangeName } from './ChangeName';
@@ -24,30 +25,60 @@ import { ChangeName } from './ChangeName';
 const Outlet = (props) => {
     const iconSize = (Dimensions.get('window').width - (Dimensions.get('window').width * 0.95));
     
-    const nameOutlet = useSelector(state => state.reducer.outletName);
-    const state = useSelector(state => state.reducer.state);
-    const visibility = useSelector(state => state.reducer.visibility);
-    const timeOn = useSelector(state => state.reducer.timeOn);
-    const potency = useSelector(state => state.reducer.potency);
+    let nameOutlet;
+    let state;
+    let visibility;
+    let timeOn;
+    let potency;
+
+    if(props.index == 1) {
+        nameOutlet = useSelector(state => state.reducer.outletName1);
+        state = useSelector(state => state.reducer.state1);
+        visibility = useSelector(state => state.reducer.visibility);
+        timeOn = useSelector(state => state.reducer.timeOn);
+        potency = useSelector(state => state.reducer.potency);
+    }
+    
+    if(props.index == 2) {
+        nameOutlet = useSelector(state => state.reducer.outletName2);
+        state = useSelector(state => state.reducer.state2);
+        visibility = useSelector(state => state.reducer.visibility);
+        timeOn = useSelector(state => state.reducer.timeOn);
+        potency = useSelector(state => state.reducer.potency);
+    }
 
     const dispatch = useDispatch();
-
+    
     const changeState = () => {
-        dispatch(stateOutlet(!state));
-        SendStateChange(!state);
-        let date = new Date();
-        if(!state) {
-            dispatch(setTimeOn(date));
-        } else {
-            dispatch(setTimeOn(0));
-            let currentTime = (date-timeOn);
-            let h,m,s;
-            h = Math.floor(currentTime/1000/60/60);
-            m = Math.floor((currentTime/1000/60/60 - h)*60);
-            s = Math.floor(((currentTime/1000/60/60 - h)*60 - m)*60);
-            let spent = (potency/1000)*s;
-            dispatch(arraySpent(spent));
-        }
+        Alert.alert(
+            "Atenção",
+            `Tem certeza que deseja ${!state ? 'ligar' : 'desligar'} a ${nameOutlet}?`,
+            [
+                {
+                    text: "Não",
+                    style: "cancel"
+                },
+                {
+                    text: "Sim", onPress: async () => {
+                        dispatch(stateOutlet(!state, props.index));
+                        SendStateChange(!state, props.index);
+                        let date = new Date();
+                        if(!state) {
+                            dispatch(setTimeOn(date));
+                        } else {
+                            dispatch(setTimeOn(0));
+                            let currentTime = (date-timeOn);
+                            let h,m,s;
+                            h = Math.floor(currentTime/1000/60/60);
+                            m = Math.floor((currentTime/1000/60/60 - h)*60);
+                            s = Math.floor(((currentTime/1000/60/60 - h)*60 - m)*60);
+                            let spent = (potency/1000)*s;
+                            dispatch(arraySpent(spent));
+                        }
+                    }
+                }
+            ]
+        );
     }
 
     const changeName = () => {
@@ -56,53 +87,22 @@ const Outlet = (props) => {
 
     useEffect(async () => {
         try {
-            let outletStorageName = await AsyncStorage.getItem('outletName');
+            let outletStorageName = await AsyncStorage.getItem(`outletName${props.index}`);
             if(outletStorageName !== null) {
-                dispatch(outletName(outletStorageName));
+                dispatch(outletName(outletStorageName, props.index));
             } else {
-                dispatch(outletName('Tomada'));
+                dispatch(outletName(`Tomada ${props.index}`, props.index));
             }
         } catch (error) {
             console.log(error);
         }
     }, []);
 
-    // useEffect(() => {
-    //     PushNotification.configure({
-    //         onRegister: function (token) {
-    //           console.log("TOKEN:", token);
-    //         },
-    //         onNotification: function (notification) {
-    //           console.log("NOTIFICATION:", notification);
-    //           notification.finish(PushNotificationIOS.FetchResult.NoData);
-    //         },
-    //         permissions: {
-    //           alert: true,
-    //           badge: true,
-    //           sound: true,
-    //         },
-    //         popInitialNotification: true,
-    //         requestPermissions: Platform.OS === 'ios',
-    //       });
-    // }, [])
-
-    // const testPush = () => {
-    //     console.log('enter')
-    //     PushNotification.localNotificationSchedule({
-    //         title:'My notification title',
-    //         date:new Date(new Date().getTime()+3000),
-    //         message:'My notification Message',
-    //         allowWhileIdle:false,
-    //         channelId: "your-channel-id"
-    //       });
-    //     console.log('pass')
-    // }
-
-    // useEffect(() => {
-    //     setInterval(() => {
-    //         SubscribeDevice(dispatch, stateOutlet);
-    //     }, 500);
-    // }, []);
+    useEffect(() => {
+        setInterval(() => {
+            SubscribeDevice(dispatch, stateOutlet, props.index);
+        }, 500);
+    }, []);
 
     return (
         <View style={Style.container}>
@@ -117,7 +117,7 @@ const Outlet = (props) => {
                 <Text style={Style.fontOutletName}>{nameOutlet}</Text>
                 <Icon name="border-color" size={iconSize} color="white" />
             </TouchableOpacity>
-            <ChangeName />
+            <ChangeName index={props.index} />
         </View>
     )
 }

@@ -23,8 +23,8 @@ const List = (props) => {
     const Tab = createBottomTabNavigator();
     return (
         <ImageBackground source={Background} style={OutletListStyle.bgImage}>
-            <Outlet navigation={props.navigation}/>
-            {/* <Outlet navigation={props.navigation}/> */}
+            <Outlet navigation={props.navigation} index={1} />
+            <Outlet navigation={props.navigation} index={2} />
         </ImageBackground>
     )
 }
@@ -38,7 +38,7 @@ const OutletList = (props) => {
             tabBarIcon: ({ focused }) => {
             let iconName;
             let colorIcon;
-            if (route.name === "Inicio") {
+            if (route.name === "Início") {
                 iconName = 'home-circle-outline';
                 colorIcon = focused ? '#ce8923' : 'gray';
             }
@@ -66,7 +66,7 @@ const OutletList = (props) => {
             inactiveTintColor: 'gray',
         }}
         >
-            <Tab.Screen name="Inicio" component={List} />
+            <Tab.Screen name="Início" component={List} />
             <Tab.Screen name="Programar" component={ToSchedule} />
             <Tab.Screen name="Alertas" component={toAlert} />
             <Tab.Screen name="Estatísticas" component={Statistics} />
